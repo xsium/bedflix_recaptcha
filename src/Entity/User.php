@@ -6,6 +6,8 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -17,6 +19,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\Email(
+        message: 'The email {{ value }} is not a valid email.',
+    )]
+    #[Assert\Length(
+        min: 6,
+        max: 180,
+        minMessage: "A mail can't be less than {{ limit }} characters long",
+        maxMessage: "A mail can't be more than {{ limit }} characters",
+    )]
+    
     private ?string $email = null;
 
     /**
@@ -29,12 +41,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    /*
+    #[Assert\Length(
+        min: 8,
+        max: 50,
+        minMessage: 'Your password must be at least {{ limit }} characters long',
+        maxMessage: 'Your passsword cannot be longer than {{ limit }} characters',
+    )]
+    #[Assert\PasswordStrength([
+        'message' => 'Your password is too easy to guess.'
+    ])]
+    */
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
+    /*
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Your lastname must be at least {{ limit }} characters long',
+        maxMessage: 'Your lastname cannot be longer than {{ limit }} characters',
+    )]
+    */
     private ?string $nom = null;
 
     #[ORM\Column(length: 50)]
+    /*
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Your first name must be at least {{ limit }} characters long',
+        maxMessage: 'Your first name cannot be longer than {{ limit }} characters',
+    )]
+    */
     private ?string $prenom = null;
 
     #[ORM\Column]

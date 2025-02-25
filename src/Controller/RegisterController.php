@@ -28,7 +28,8 @@ final class RegisterController extends AbstractController{
  
          // Initialize message variable
  
-         if ($form->isSubmitted() && $form->isValid()) {
+         if ($form->isSubmitted()) {
+            if ($form->isValid()) {
             // Get score
             $recaptchaResponse = $recaptcha3Validator->getLastResponse();
             $score = $recaptchaResponse ? $recaptchaResponse->getScore() : 0;
@@ -42,6 +43,11 @@ final class RegisterController extends AbstractController{
         
                 $this->addFlash('success', "Registration successful!");
                 return new RedirectResponse($urlGenerator->generate('app_register'));
+            }
+            }else {
+                foreach ($form->getErrors(true) as $error) {
+                    $this->addFlash('error', $error->getMessage());
+                }
             }
         }
  
