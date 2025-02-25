@@ -4,20 +4,14 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block body %}
-{# Flash messages for errors #}
-    
-    {% for message in app.flashes('error') %}
-        <div class="alert alert-danger">
-            {{ message }}
-        </div>
-    {% endfor %}
+
 <div class="myform">
     {{ form_start(form) }}
         {{ form_widget(form) }}
     {{ form_end(form) }}
 
-    
-    
+
+    {# Flash messages for Registration status : success or blocked by recaptcha #}
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert alert-{{ label }}">{{ message }}</div>

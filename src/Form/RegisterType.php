@@ -66,7 +66,10 @@ class RegisterType extends AbstractType
             ])
             ->add('save', SubmitType::class)
             ->add('captcha', Recaptcha3Type::class, [
-                'constraints' => [new Recaptcha3()],
+                'constraints' => [new Recaptcha3([
+                    'message' => 'karser_recaptcha3.message',
+                    'messageMissingValue' => 'karser_recaptcha3.message_missing_value',
+                ])],
                 'action_name' => 'register/adduser',
                 'locale' => 'fr',
             ])

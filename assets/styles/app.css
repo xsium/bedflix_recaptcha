@@ -27,6 +27,9 @@ body {
 .alert-danger{
     background-color: rgb(91, 21, 5);
 }
+.alert-error{
+    background-color: rgb(159, 37, 9);
+}
 .myform{
     margin: 10px;
     color: white;

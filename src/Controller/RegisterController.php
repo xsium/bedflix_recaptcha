@@ -30,24 +30,26 @@ final class RegisterController extends AbstractController{
  
          if ($form->isSubmitted()) {
             if ($form->isValid()) {
-            // Get score
-            $recaptchaResponse = $recaptcha3Validator->getLastResponse();
-            $score = $recaptchaResponse ? $recaptchaResponse->getScore() : 0;
-            // Check if user is a bot
-            if ($score < 0.5) {
-                $this->addFlash('danger', "L'utilisateur est un bot"); //utilisation de addflash pour éviter l'erreur de turbodriver
-                return $this->redirectToRoute('app_register');
-            } else {
-                $entityManager->persist($user);
-                $entityManager->flush();
+                // Get score
+                $recaptchaResponse = $recaptcha3Validator->getLastResponse();
+                $score = $recaptchaResponse ? $recaptchaResponse->getScore() : 0;
+
+                // Check if user is a bot
+                if ($score < 0.5) {
+                    $this->addFlash('danger', "L'utilisateur est un bot"); //utilisation de addflash pour éviter l'erreur de turbodriver
+                    return $this->redirectToRoute('app_register');
+                } else {
+                    $entityManager->persist($user);
+                    $entityManager->flush();
         
-                $this->addFlash('success', "Registration successful!");
-                return new RedirectResponse($urlGenerator->generate('app_register'));
-            }
-            }else {
+                    $this->addFlash('success', "Registration successful!");
+                    return new RedirectResponse($urlGenerator->generate('app_register'));
+                }
+            } else {
                 foreach ($form->getErrors(true) as $error) {
                     $this->addFlash('error', $error->getMessage());
                 }
+                return new RedirectResponse($urlGenerator->generate('app_register'));
             }
         }
  
